@@ -17,7 +17,9 @@ C4Container
     System_Ext(gemini, "Google Gemini API", "External LLM service")
 
     Rel(user, api, "POST /ask", "HTTPS")
-    Rel(api, orchestrator, "Passes user question")
+    Rel(user, api, "POST /summarize", "HTTPS")
+
+    Rel(api, orchestrator, "Passes user input")
     Rel(orchestrator, provider, "Sends formatted prompt")
     Rel(provider, gemini, "generate_content()", "HTTPS")
 ```
@@ -29,3 +31,11 @@ C4Container
 | API Container | `main.py` | Receives HTTP requests, returns responses |
 | Prompt Orchestrator | `orchestrator.py` | Builds prompts from user input and system context |
 | Model Provider | `model_provider.py` | Sends prompts to Gemini, returns generated text |
+
+## Endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/health` | Health check |
+| POST | `/ask` | Submit a question, receive an AI-generated answer |
+| POST | `/summarize` | Submit text, receive a concise summary |
